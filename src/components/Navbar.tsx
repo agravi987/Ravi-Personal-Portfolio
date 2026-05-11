@@ -10,6 +10,7 @@ import type { PortfolioProfile } from "@/lib/portfolio-data";
 const navLinks = [
   { name: "About", href: "/about", sectionId: "about" },
   { name: "Projects", href: "/projects", sectionId: "projects" },
+  { name: "GitHub", href: "/projects#github", sectionId: "projects" },
   { name: "Stack", href: "/stack", sectionId: "skills" },
   { name: "Knowledge", href: "/knowledge", sectionId: "knowledge" },
   { name: "Experience", href: "/experience", sectionId: "experience" },

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Project from "@/models/Project";
+import { projectSchema, validationError } from "@/lib/validation";
 
 export async function GET() {
   await dbConnect();
@@ -25,7 +26,13 @@ export async function POST(req: Request) {
   await dbConnect();
   try {
     const body = await req.json();
-    const project = await Project.create(body);
+    const parsed = projectSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(validationError(parsed.error), { status: 400 });
+    }
+
+    const project = await Project.create(parsed.data);
     return NextResponse.json(project, { status: 201 });
   } catch {
     return NextResponse.json(

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
+import { auth } from "@/auth";
 
 // Configure Cloudinary
 cloudinary.config({
@@ -14,6 +15,11 @@ cloudinary.config({
  * Expects a JSON body with 'publicId'.
  */
 export async function POST(request: NextRequest) {
+  const session = await auth();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const { publicId } = await request.json();
 

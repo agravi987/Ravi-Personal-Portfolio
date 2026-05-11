@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Achievement from "@/models/Achievement";
+import { achievementSchema, validationError } from "@/lib/validation";
 
 export async function GET() {
   await dbConnect();
@@ -17,7 +18,13 @@ export async function POST(req: Request) {
   await dbConnect();
   try {
     const body = await req.json();
-    const ach = await Achievement.create(body);
+    const parsed = achievementSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(validationError(parsed.error), { status: 400 });
+    }
+
+    const ach = await Achievement.create(parsed.data);
     return NextResponse.json(ach, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Failed" }, { status: 500 });

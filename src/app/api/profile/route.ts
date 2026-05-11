@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Profile from "@/models/Profile";
 import { fallbackProfile } from "@/lib/portfolio-data";
+import { profileSchema, validationError } from "@/lib/validation";
 
 export async function GET() {
   await dbConnect();
@@ -20,7 +21,13 @@ export async function PUT(req: Request) {
 
   try {
     const body = await req.json();
-    const profile = await Profile.findOneAndUpdate({}, body, {
+    const parsed = profileSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(validationError(parsed.error), { status: 400 });
+    }
+
+    const profile = await Profile.findOneAndUpdate({}, parsed.data, {
       new: true,
       upsert: true,
       runValidators: true,

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Experience from "@/models/Experience";
+import { experienceSchema, validationError } from "@/lib/validation";
 
 export async function GET() {
   await dbConnect();
@@ -17,7 +18,13 @@ export async function POST(req: Request) {
   await dbConnect();
   try {
     const body = await req.json();
-    const exp = await Experience.create(body);
+    const parsed = experienceSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(validationError(parsed.error), { status: 400 });
+    }
+
+    const exp = await Experience.create(parsed.data);
     return NextResponse.json(exp, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Failed" }, { status: 500 });

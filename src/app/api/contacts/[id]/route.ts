@@ -2,6 +2,12 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Contact from "@/models/Contact";
+import { z } from "zod";
+import { validationError } from "@/lib/validation";
+
+const contactUpdateSchema = z.object({
+  read: z.boolean(),
+});
 
 export async function PUT(
   req: Request,
@@ -15,7 +21,13 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await req.json();
-    const updated = await Contact.findByIdAndUpdate(id, body, {
+    const parsed = contactUpdateSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(validationError(parsed.error), { status: 400 });
+    }
+
+    const updated = await Contact.findByIdAndUpdate(id, parsed.data, {
       new: true,
     });
     return NextResponse.json(updated);

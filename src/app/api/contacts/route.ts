@@ -3,6 +3,8 @@ import dbConnect from "@/lib/mongodb";
 import Contact from "@/models/Contact";
 import { sendContactEmail } from "@/lib/email";
 import { auth } from "@/auth";
+import { contactSchema, validationError } from "@/lib/validation";
+import { rateLimit } from "@/lib/rate-limit";
 
 // GET - Fetch all contacts (admin only)
 export async function GET() {
@@ -29,25 +31,34 @@ export async function POST(req: Request) {
   await dbConnect();
 
   try {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
+    const limit = rateLimit(`contact:${ip}`, {
+      limit: 4,
+      windowMs: 10 * 60 * 1000,
+    });
+
+    if (limit.limited) {
+      return NextResponse.json(
+        { error: "Too many messages. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
-    const { name, email, subject, message } = body;
+    const parsed = contactSchema.safeParse(body);
 
-    // Validate required fields
-    if (!name || !email || !message) {
-      return NextResponse.json(
-        { error: "Name, email, and message are required" },
-        { status: 400 }
-      );
+    if (!parsed.success) {
+      return NextResponse.json(validationError(parsed.error), { status: 400 });
     }
 
-    // Validate email format
-    const emailRegex = /^\S+@\S+\.\S+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: "Please provide a valid email" },
-        { status: 400 }
-      );
+    if (parsed.data.company) {
+      return NextResponse.json({ success: true }, { status: 201 });
     }
+
+    const { name, email, subject, message } = parsed.data;
 
     // Save to database
     await Contact.create({

@@ -28,6 +28,7 @@ interface ContactFormData {
   email: string;
   subject: string;
   message: string;
+  company?: string;
 }
 
 const inputClass =
@@ -195,6 +196,15 @@ export function Contact({
             )}
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              <input
+                {...register("company")}
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
+
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
                   <label className="mb-2 block text-sm font-semibold">

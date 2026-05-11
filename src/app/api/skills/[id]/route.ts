@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Skill from "@/models/Skill";
+import { skillSchema, validationError } from "@/lib/validation";
 
 export async function PUT(
   req: Request,
@@ -15,7 +16,13 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await req.json();
-    const updated = await Skill.findByIdAndUpdate(id, body, {
+    const parsed = skillSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(validationError(parsed.error), { status: 400 });
+    }
+
+    const updated = await Skill.findByIdAndUpdate(id, parsed.data, {
       new: true,
     });
     return NextResponse.json(updated);

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Knowledge from "@/models/Knowledge";
+import { knowledgeSchema, validationError } from "@/lib/validation";
 
 export async function GET() {
   await dbConnect();
@@ -31,7 +32,13 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const knowledge = await Knowledge.create(body);
+    const parsed = knowledgeSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(validationError(parsed.error), { status: 400 });
+    }
+
+    const knowledge = await Knowledge.create(parsed.data);
     return NextResponse.json(knowledge, { status: 201 });
   } catch {
     return NextResponse.json(

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary, type UploadApiResponse } from "cloudinary";
+import { auth } from "@/auth";
 
 // Configure Cloudinary
 cloudinary.config({
@@ -14,12 +15,24 @@ cloudinary.config({
  * Receives a FormData object with a 'file' field.
  */
 export async function POST(request: NextRequest) {
+  const session = await auth();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File;
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: "File size must be 5MB or less" },
+        { status: 400 }
+      );
     }
 
     // Convert file to buffer
