@@ -8,6 +8,7 @@ import {
   SiGithub,
   SiGithubactions,
   SiJavascript,
+  SiKubernetes,
   SiLinux,
   SiMongodb,
   SiMysql,
@@ -16,10 +17,11 @@ import {
   SiNodedotjs,
   SiPython,
   SiReact,
+  SiTerraform,
   SiTypescript,
   SiVercel,
 } from "react-icons/si";
-import { Code2, Database, Server, Wrench } from "lucide-react";
+import { Code2, Database, Network, Server, Wrench } from "lucide-react";
 
 const techIconMap: Array<[string, IconType]> = [
   ["javascript", SiJavascript],
@@ -34,6 +36,8 @@ const techIconMap: Array<[string, IconType]> = [
   ["docker", SiDocker],
   ["github actions", SiGithubactions],
   ["github", SiGithub],
+  ["kubernetes", SiKubernetes],
+  ["terraform", SiTerraform],
   ["linux", SiLinux],
   ["vercel", SiVercel],
   ["cloudinary", SiCloudinary],
@@ -57,6 +61,10 @@ export function TechIcon({
 
   if (normalized.includes("database") || normalized.includes("data")) {
     return <Database className={className} aria-hidden="true" />;
+  }
+
+  if (normalized.includes("network")) {
+    return <Network className={className} aria-hidden="true" />;
   }
 
   if (normalized.includes("api") || normalized.includes("backend")) {

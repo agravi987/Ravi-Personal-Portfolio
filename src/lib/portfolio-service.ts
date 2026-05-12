@@ -2,17 +2,20 @@ import dbConnect from "@/lib/mongodb";
 import Project from "@/models/Project";
 import Skill from "@/models/Skill";
 import Knowledge from "@/models/Knowledge";
+import DevOpsMilestone from "@/models/DevOpsMilestone";
 import ExperienceModel from "@/models/Experience";
 import Achievement from "@/models/Achievement";
 import Profile from "@/models/Profile";
 import {
   fallbackAchievements,
+  fallbackDevOpsJourney,
   fallbackExperience,
   fallbackKnowledge,
   fallbackProfile,
   fallbackProjects,
   fallbackSkills,
   type PortfolioAchievement,
+  type PortfolioDevOpsMilestone,
   type PortfolioExperience,
   type PortfolioKnowledge,
   type PortfolioProfile,
@@ -24,6 +27,7 @@ export interface PortfolioData {
   projects: PortfolioProject[];
   skills: PortfolioSkill[];
   knowledge: PortfolioKnowledge[];
+  devOpsJourney: PortfolioDevOpsMilestone[];
   experience: PortfolioExperience[];
   achievements: PortfolioAchievement[];
   profile: PortfolioProfile;
@@ -33,6 +37,7 @@ const fallbackData: PortfolioData = {
   projects: fallbackProjects,
   skills: fallbackSkills,
   knowledge: fallbackKnowledge,
+  devOpsJourney: fallbackDevOpsJourney,
   experience: fallbackExperience,
   achievements: fallbackAchievements,
   profile: fallbackProfile,
@@ -69,6 +74,9 @@ async function getLiveData(): Promise<PortfolioData> {
   const knowledge = await Knowledge.find({})
     .sort({ featured: -1, category: 1, createdAt: -1 })
     .lean();
+  const devOpsJourney = await DevOpsMilestone.find({})
+    .sort({ order: 1, createdAt: 1 })
+    .lean();
   const experience = await ExperienceModel.find({}).lean();
   const achievements = await Achievement.find({}).lean();
   const profile = await Profile.findOne({}).lean();
@@ -77,6 +85,8 @@ async function getLiveData(): Promise<PortfolioData> {
     projects: projects.map(serialize) as unknown as PortfolioProject[],
     skills: skills.map(serialize) as unknown as PortfolioSkill[],
     knowledge: knowledge.map(serialize) as unknown as PortfolioKnowledge[],
+    devOpsJourney:
+      devOpsJourney.map(serialize) as unknown as PortfolioDevOpsMilestone[],
     experience: experience.map(serialize) as unknown as PortfolioExperience[],
     achievements:
       achievements.map(serialize) as unknown as PortfolioAchievement[],
@@ -98,6 +108,9 @@ export async function getPortfolioData() {
       knowledge: liveData.knowledge.length
         ? liveData.knowledge
         : fallbackKnowledge,
+      devOpsJourney: liveData.devOpsJourney.length
+        ? liveData.devOpsJourney
+        : fallbackDevOpsJourney,
       experience: liveData.experience.length
         ? liveData.experience
         : fallbackExperience,

@@ -68,6 +68,21 @@ export const knowledgeSchema = z.object({
   featured: z.boolean().optional().default(false),
 });
 
+export const devOpsMilestoneSchema = z.object({
+  title: cleanText(1, 80),
+  category: cleanText(1, 80),
+  summary: cleanText(1, 500),
+  status: z
+    .enum(["Planned", "Learning", "Practicing", "Confident"])
+    .optional()
+    .default("Learning"),
+  order: z.coerce.number().int().min(1).max(99).optional().default(1),
+  color: optionalText(40),
+  docsLink: optionalUrl,
+  proofLink: optionalUrl,
+  featured: z.boolean().optional().default(false),
+});
+
 export const experienceSchema = z.object({
   role: cleanText(1, 120),
   company: cleanText(1, 120),

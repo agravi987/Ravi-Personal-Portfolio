@@ -12,6 +12,7 @@ import {
   LogOut,
   UserRound,
   FileText,
+  Rocket,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -21,6 +22,7 @@ const sidebarLinks = [
   { name: "Profile", href: "/admin/profile", icon: UserRound },
   { name: "Projects", href: "/admin/projects", icon: FolderKanban },
   { name: "Skills", href: "/admin/skills", icon: Wrench },
+  { name: "DevOps Journey", href: "/admin/devops-journey", icon: Rocket },
   { name: "Knowledge", href: "/admin/knowledge", icon: FileText },
   { name: "Experience", href: "/admin/experience", icon: Briefcase },
   { name: "Achievements", href: "/admin/achievements", icon: Award },

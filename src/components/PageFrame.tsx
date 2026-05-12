@@ -5,6 +5,7 @@ import { SectionNavigator } from "@/components/SectionNavigator";
 import Link from "next/link";
 import type {
   PortfolioExperience,
+  PortfolioDevOpsMilestone,
   PortfolioKnowledge,
   PortfolioProfile,
   PortfolioProject,
@@ -15,6 +16,7 @@ type CommandPaletteData = {
   projects?: PortfolioProject[];
   skills?: PortfolioSkill[];
   knowledge?: PortfolioKnowledge[];
+  devOpsJourney?: PortfolioDevOpsMilestone[];
   experience?: PortfolioExperience[];
 };
 

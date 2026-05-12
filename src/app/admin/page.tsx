@@ -9,6 +9,7 @@ import {
   FileText,
   FolderKanban,
   Mail,
+  Rocket,
   UserRound,
   Wrench,
 } from "lucide-react";
@@ -51,6 +52,13 @@ const initialStats: StatCount[] = [
     helper: "Topics and documentation refs",
   },
   {
+    label: "DevOps Journey",
+    href: "/admin/devops-journey",
+    icon: Rocket,
+    count: "--",
+    helper: "Roadmap planets and milestones",
+  },
+  {
     label: "Experience",
     href: "/admin/experience",
     icon: Briefcase,
@@ -85,12 +93,21 @@ export default function AdminDashboard() {
           fetch("/api/projects"),
           fetch("/api/skills"),
           fetch("/api/knowledge"),
+          fetch("/api/devops-journey"),
           fetch("/api/experience"),
           fetch("/api/achievements"),
           fetch("/api/contacts"),
         ]);
 
-        const [projects, skills, knowledge, experience, achievements, contacts] =
+        const [
+          projects,
+          skills,
+          knowledge,
+          devOpsJourney,
+          experience,
+          achievements,
+          contacts,
+        ] =
           await Promise.all(
             responses.map(async (response) => {
               if (!response.ok) return [];
@@ -109,6 +126,8 @@ export default function AdminDashboard() {
                 return { ...stat, count: String(skills.length) };
               case "Knowledge":
                 return { ...stat, count: String(knowledge.length) };
+              case "DevOps Journey":
+                return { ...stat, count: String(devOpsJourney.length) };
               case "Experience":
                 return { ...stat, count: String(experience.length) };
               case "Achievements":

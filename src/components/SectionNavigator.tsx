@@ -10,6 +10,7 @@ import {
   FolderGit2,
   Home,
   Layers3,
+  Rocket,
   UserRound,
 } from "lucide-react";
 
@@ -23,6 +24,7 @@ const sections: Array<{
   { id: "about", label: "About", href: "/about", icon: UserRound },
   { id: "projects", label: "Projects", href: "/projects", icon: FolderGit2 },
   { id: "skills", label: "Stack", href: "/stack", icon: Layers3 },
+  { id: "devops-journey", label: "Journey", href: "/#devops-journey", icon: Rocket },
   { id: "knowledge", label: "Knowledge", href: "/knowledge", icon: BookOpen },
   {
     id: "experience",

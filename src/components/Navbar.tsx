@@ -10,6 +10,7 @@ import {
   Layers3,
   Mail,
   Menu,
+  Rocket,
   Search,
   UserRound,
   X,
@@ -21,6 +22,7 @@ const navLinks = [
   { name: "Projects", href: "/projects", sectionId: "projects" },
   { name: "GitHub", href: "/projects#github", sectionId: "projects" },
   { name: "Stack", href: "/stack", sectionId: "skills" },
+  { name: "Journey", href: "/#devops-journey", sectionId: "devops-journey" },
   { name: "Knowledge", href: "/knowledge", sectionId: "knowledge" },
   { name: "Experience", href: "/experience", sectionId: "experience" },
   { name: "Contact", href: "/contact", sectionId: "contact" },
@@ -31,6 +33,7 @@ const mobileDockLinks = [
   { name: "About", href: "/about", icon: UserRound, sectionId: "about" },
   { name: "Work", href: "/projects", icon: FolderGit2, sectionId: "projects" },
   { name: "Stack", href: "/stack", icon: Layers3, sectionId: "skills" },
+  { name: "Journey", href: "/#devops-journey", icon: Rocket, sectionId: "devops-journey" },
   { name: "Contact", href: "/contact", icon: Mail, sectionId: "contact" },
 ];
 
@@ -219,7 +222,7 @@ export function Navbar({ profile }: { profile?: PortfolioProfile }) {
       )}
     </nav>
     <div className="fixed inset-x-0 bottom-0 z-50 px-3 pb-3 md:hidden">
-      <div className="mobile-safe-bottom mx-auto grid max-w-md grid-cols-5 rounded-2xl border border-white/60 bg-background/90 p-1.5 shadow-2xl shadow-slate-900/20 backdrop-blur-xl dark:border-white/10">
+      <div className="mobile-safe-bottom mx-auto grid max-w-md grid-cols-6 rounded-2xl border border-white/60 bg-background/90 p-1.5 shadow-2xl shadow-slate-900/20 backdrop-blur-xl dark:border-white/10">
         {mobileDockLinks.map((link) => {
           const Icon = link.icon;
           const isActive =

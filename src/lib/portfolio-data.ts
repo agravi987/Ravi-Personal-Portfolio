@@ -36,6 +36,19 @@ export interface PortfolioKnowledge {
   featured?: boolean;
 }
 
+export interface PortfolioDevOpsMilestone {
+  _id: string;
+  title: string;
+  category: string;
+  summary: string;
+  status: "Planned" | "Learning" | "Practicing" | "Confident";
+  order: number;
+  color?: string;
+  docsLink?: string;
+  proofLink?: string;
+  featured?: boolean;
+}
+
 export interface PortfolioExperience {
   _id: string;
   role: string;
@@ -265,6 +278,103 @@ export const fallbackKnowledge: PortfolioKnowledge[] = [
       "I think about what happens after launch too: visibility, failure signals, and enough telemetry to debug real issues.",
     topics: ["Logs", "Health checks", "Metrics", "Incident debugging"],
     documentationLink: "https://prometheus.io/docs/introduction/overview/",
+  },
+];
+
+export const fallbackDevOpsJourney: PortfolioDevOpsMilestone[] = [
+  {
+    _id: "devops-python",
+    title: "Python",
+    category: "Automation",
+    summary: "Scripting, CLI utilities, API automation, and repeatable ops tasks.",
+    status: "Practicing",
+    order: 1,
+    color: "sky",
+    docsLink: "https://docs.python.org/3/",
+    featured: true,
+  },
+  {
+    _id: "devops-networking",
+    title: "Networking",
+    category: "Foundations",
+    summary: "HTTP, DNS, ports, routing basics, and debugging service connectivity.",
+    status: "Learning",
+    order: 2,
+    color: "emerald",
+    featured: true,
+  },
+  {
+    _id: "devops-linux",
+    title: "Linux",
+    category: "Systems",
+    summary: "Shell workflows, permissions, processes, services, logs, and server basics.",
+    status: "Practicing",
+    order: 3,
+    color: "amber",
+    docsLink: "https://www.kernel.org/doc/html/latest/",
+    featured: true,
+  },
+  {
+    _id: "devops-git",
+    title: "Git & GitHub",
+    category: "Source Control",
+    summary: "Branching, pull requests, releases, and collaboration hygiene.",
+    status: "Confident",
+    order: 4,
+    color: "slate",
+    docsLink: "https://docs.github.com/",
+  },
+  {
+    _id: "devops-docker",
+    title: "Docker",
+    category: "Containers",
+    summary: "Images, Dockerfiles, Compose labs, and reproducible app environments.",
+    status: "Practicing",
+    order: 5,
+    color: "cyan",
+    docsLink: "https://docs.docker.com/",
+    featured: true,
+  },
+  {
+    _id: "devops-github-actions",
+    title: "GitHub Actions",
+    category: "CI/CD",
+    summary: "Automated checks, build workflows, environment variables, and deployment gates.",
+    status: "Practicing",
+    order: 6,
+    color: "violet",
+    docsLink: "https://docs.github.com/actions",
+    featured: true,
+  },
+  {
+    _id: "devops-kubernetes",
+    title: "Kubernetes",
+    category: "Orchestration",
+    summary: "Pods, deployments, services, config, scaling, and cluster mental models.",
+    status: "Learning",
+    order: 7,
+    color: "blue",
+    docsLink: "https://kubernetes.io/docs/home/",
+  },
+  {
+    _id: "devops-terraform",
+    title: "Terraform",
+    category: "Infrastructure as Code",
+    summary: "Declaring cloud resources, state awareness, modules, and reviewable infra changes.",
+    status: "Planned",
+    order: 8,
+    color: "purple",
+    docsLink: "https://developer.hashicorp.com/terraform/docs",
+  },
+  {
+    _id: "devops-monitoring",
+    title: "Monitoring",
+    category: "Operations",
+    summary: "Logs, metrics, health checks, alerts, and post-deploy visibility.",
+    status: "Planned",
+    order: 9,
+    color: "rose",
+    docsLink: "https://prometheus.io/docs/introduction/overview/",
   },
 ];
 

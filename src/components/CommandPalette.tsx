@@ -15,6 +15,7 @@ import {
   Layers3,
   Linkedin,
   Mail,
+  Rocket,
   Search,
   Sparkles,
   UserRound,
@@ -22,6 +23,7 @@ import {
 import { SiGithub } from "react-icons/si";
 import type {
   PortfolioExperience,
+  PortfolioDevOpsMilestone,
   PortfolioKnowledge,
   PortfolioProfile,
   PortfolioProject,
@@ -34,6 +36,7 @@ type CommandPaletteData = {
   projects?: PortfolioProject[];
   skills?: PortfolioSkill[];
   knowledge?: PortfolioKnowledge[];
+  devOpsJourney?: PortfolioDevOpsMilestone[];
   experience?: PortfolioExperience[];
 };
 
@@ -41,7 +44,14 @@ type IconComponent = ElementType<{ className?: string }>;
 
 type CommandAction = {
   id: string;
-  group: "Navigate" | "Projects" | "Stack" | "Knowledge" | "Experience" | "Connect";
+  group:
+    | "Navigate"
+    | "Projects"
+    | "Stack"
+    | "Journey"
+    | "Knowledge"
+    | "Experience"
+    | "Connect";
   label: string;
   description: string;
   href: string;
@@ -87,6 +97,15 @@ const primaryActions: CommandAction[] = [
     href: "/stack",
     icon: Layers3,
     keywords: ["skills", "technologies", "tools"],
+  },
+  {
+    id: "devops-journey",
+    group: "Navigate",
+    label: "DevOps Journey",
+    description: "Open the roadmap of DevOps learning milestones.",
+    href: "/#devops-journey",
+    icon: Rocket,
+    keywords: ["roadmap", "devops", "milestones", "planets"],
   },
   {
     id: "knowledge",
@@ -198,6 +217,25 @@ export function CommandPalette({
       keywords: [item.summary, item.category, ...item.topics],
       }));
 
+    const journeyActions: CommandAction[] = (data?.devOpsJourney || [])
+      .slice(0, 10)
+      .map((milestone) => ({
+        id: `journey-${milestone._id}`,
+        group: "Journey" as const,
+        label: milestone.title,
+        description: `${milestone.category} - ${milestone.status}`,
+        href: `/#devops-journey`,
+        icon: Rocket,
+        tech: milestone.title,
+        keywords: [
+          milestone.summary,
+          milestone.category,
+          milestone.status,
+          "devops",
+          "roadmap",
+        ],
+      }));
+
     const experienceActions: CommandAction[] = (data?.experience || [])
       .slice(0, 6)
       .map((exp) => ({
@@ -260,6 +298,7 @@ export function CommandPalette({
       ...primaryActions,
       ...projectActions,
       ...skillActions,
+      ...journeyActions,
       ...knowledgeActions,
       ...experienceActions,
       ...connectActions,
@@ -282,7 +321,7 @@ export function CommandPalette({
     router.push(action.href);
   };
 
-  const groups = ["Navigate", "Projects", "Stack", "Knowledge", "Experience", "Connect"] as const;
+  const groups = ["Navigate", "Projects", "Stack", "Journey", "Knowledge", "Experience", "Connect"] as const;
 
   return (
     <>
